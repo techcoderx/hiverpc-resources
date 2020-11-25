@@ -16,6 +16,9 @@ const nodes = [
     // 'https://anyx.io',
     // 'https://hived.privex.io',
     // 'https://hived.hive-engine.com',
+    // 'https://direct.hived.privex.io',
+    // 'https://hiveseed-fin.privex.io',
+    // 'https://hiveseed-se.privex.io',
     // 'https://fin.hive.3speak.online',
     // 'https://api.pharesim.me',
     // 'https://rpc.ausbit.dev',
@@ -25,6 +28,7 @@ const nodes = [
     // 'https://api.c0ff33a.uk',
     // 'https://api.deathwing.me',
     // 'https://hive-api.arcange.eu',
+    // 'https://hived.emre.sh',
     'http://192.168.0.186:8093'
 ]
 
@@ -110,7 +114,7 @@ const runSuites = (suite,cb) => {
         outputKey = toCamel(params[0].split('.')[1])
     }
     hive.api[method](...params,(e) => {
-        if (e) console.log(e)
+        if (e) console.log(e.toString())
         console.log(outputKey+': '+(new Date().getTime()-last_runtime)+'ms')
         cumulative += new Date().getTime()-last_runtime
         last_runtime = new Date().getTime()
