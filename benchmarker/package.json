@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@hiveio/hive-js": "^0.8.10",
+    "ip-locator": "0.0.1",
     "steem": "^0.7.10"
   }
 }

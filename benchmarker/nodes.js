@@ -1,0 +1,21 @@
+module.exports = [
+    'https://api.hive.blog',
+    'https://api.openhive.network',
+    'https://anyx.io',
+    'https://hived.privex.io',
+    'https://hived.hive-engine.com',
+    'https://direct.hived.privex.io',
+    'https://hiveseed-fin.privex.io',
+    'https://hiveseed-se.privex.io',
+    'https://fin.hive.3speak.online',
+    'https://api.pharesim.me',
+    'https://rpc.ausbit.dev',
+    'https://rpc.ecency.com',
+    'https://api.hivekings.com',
+    'https://hive.roelandp.nl',
+    'https://api.c0ff33a.uk',
+    'https://api.deathwing.me',
+    'https://hive-api.arcange.eu',
+    'https://hived.emre.sh',
+    'http://192.168.0.186:8093'
+]
