@@ -11,24 +11,24 @@ const testArg = {
 }
 
 const nodes = [
-    // 'https://api.hive.blog',
-    // 'https://api.openhive.network',
-    // 'https://anyx.io',
-    // 'https://hived.privex.io',
-    // 'https://hived.hive-engine.com',
-    // 'https://direct.hived.privex.io',
-    // 'https://hiveseed-fin.privex.io',
-    // 'https://hiveseed-se.privex.io',
-    // 'https://fin.hive.3speak.online',
-    // 'https://api.pharesim.me',
-    // 'https://rpc.ausbit.dev',
-    // 'https://rpc.ecency.com',
-    // 'https://api.hivekings.com',
-    // 'https://hive.roelandp.nl',
-    // 'https://api.c0ff33a.uk',
-    // 'https://api.deathwing.me',
-    // 'https://hive-api.arcange.eu',
-    // 'https://hived.emre.sh',
+    'https://api.hive.blog',
+    'https://api.openhive.network',
+    'https://anyx.io',
+    'https://hived.privex.io',
+    'https://hived.hive-engine.com',
+    'https://direct.hived.privex.io',
+    'https://hiveseed-fin.privex.io',
+    'https://hiveseed-se.privex.io',
+    'https://fin.hive.3speak.online',
+    'https://api.pharesim.me',
+    'https://rpc.ausbit.dev',
+    'https://rpc.ecency.com',
+    'https://api.hivekings.com',
+    'https://hive.roelandp.nl',
+    'https://api.c0ff33a.uk',
+    'https://api.deathwing.me',
+    'https://hive-api.arcange.eu',
+    'https://hived.emre.sh',
     'http://192.168.0.186:8093'
 ]
 
@@ -108,7 +108,7 @@ const runSuites = (suite,cb) => {
     let outputKey = suites[suite][0]
     let params = suites[suite].slice(1)
     if (suites[suite][0] === null) {
-        console.log('\n------------------------')
+        console.log('------------------------')
         console.log(suites[suite][1] + ' calls')
         console.log('------------------------')
         return runSuites(suite+1,cb)
@@ -117,7 +117,10 @@ const runSuites = (suite,cb) => {
         outputKey = toCamel(params[0].split('.')[1])
     }
     hive.api[method](...params,(e) => {
-        if (e) console.log(e.toString())
+        if (e) {
+            console.log(e.toString())
+            errors += 1
+        }
         console.log(outputKey+': '+(new Date().getTime()-last_runtime)+'ms')
         cumulative += new Date().getTime()-last_runtime
         last_runtime = new Date().getTime()
@@ -128,11 +131,25 @@ const runSuites = (suite,cb) => {
     })
 }
 
-const run = (rpc, appbase) => {
+const run = (rpc, appbase, cb) => {
     hive.api.setOptions({ url: rpc, useAppbaseApi: appbase })
+    console.log('\nBenchmarking ' + rpc + '...')
     runSuites(0,() => {
         console.log('\nTotal benchmark time: ' + cumulative + 'ms\n')
-        process.exit(0)
+        results.push({rpc,total:cumulative,errors:errors})
+        cumulative = 0
+        errors = 0
+        cb()
+    })
+}
+
+const runnodes = (nodelst, appbase, cb) => {
+    run(nodelst[0], appbase, () => {
+        nodelst.shift()
+        if (nodelst.length > 0)
+            runnodes(nodelst, appbase, cb)
+        else
+            cb()
     })
 }
 
@@ -144,9 +161,15 @@ const toCamel = (s) => {
     })
 }
 
-current_node = 0
 last_runtime = new Date().getTime()
 cumulative = 0
+errors = 0
+results = []
 
 console.log('\nWelcome to Hive RPC Benchmark')
-run(nodes[0],true)
+runnodes(nodes,true,() => {
+    results.sort((a,b) => a.total - b.total)
+    console.log('Benchmark complete, results:')
+    console.log(results)
+    process.exit(0)
+})
