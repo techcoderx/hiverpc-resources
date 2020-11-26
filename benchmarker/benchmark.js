@@ -119,7 +119,10 @@ const runSuites = (suite,cb) => {
     hive.api[method](...params,(e) => {
         if (e) {
             console.log(e.toString())
-            errors += 1
+            if (e.toString() == 'RPCError: Request Timeout')
+                timeouts += 1
+            else
+                errors += 1
         }
         console.log(outputKey+': '+(new Date().getTime()-last_runtime)+'ms')
         cumulative += new Date().getTime()-last_runtime
@@ -136,9 +139,10 @@ const run = (rpc, appbase, cb) => {
     console.log('\nBenchmarking ' + rpc + '...')
     runSuites(0,() => {
         console.log('\nTotal benchmark time: ' + cumulative + 'ms\n')
-        results.push({rpc,total:cumulative,errors:errors})
+        results.push({rpc,total:cumulative,errors:errors,timeouts:timeouts})
         cumulative = 0
         errors = 0
+        timeouts = 0
         cb()
     })
 }
@@ -164,6 +168,7 @@ const toCamel = (s) => {
 last_runtime = new Date().getTime()
 cumulative = 0
 errors = 0
+timeouts = 0
 results = []
 
 console.log('\nWelcome to Hive RPC Benchmark')
