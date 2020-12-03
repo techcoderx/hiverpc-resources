@@ -4,6 +4,7 @@ module.exports = [
     'https://anyx.io',
     'https://hived.privex.io',
     'https://hived.hive-engine.com',
+    'https://hived.splinterlands.com',
     'https://direct.hived.privex.io',
     'https://hiveseed-fin.privex.io',
     'https://hiveseed-se.privex.io',
