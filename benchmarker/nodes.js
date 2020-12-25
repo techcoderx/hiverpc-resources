@@ -18,5 +18,5 @@ module.exports = [
     'https://api.deathwing.me',
     'https://hive-api.arcange.eu',
     'https://hived.emre.sh',
-    'http://192.168.0.186:8093'
+    'https://techcoderx.com'
 ]
