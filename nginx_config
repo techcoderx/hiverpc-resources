@@ -1,0 +1,49 @@
+proxy_cache_path /tmp/cache/peakdapi levels=1:2 keys_zone=peakdapi:10m max_size=1g inactive=1m;
+limit_req_zone $binary_remote_addr zone=mylimit:10m rate=20r/s;
+
+server {
+        listen 80;
+        listen [::]:80;
+        server_name techcoderx.com;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        server_name techcoderx.com;
+        ssl_certificate /etc/letsencrypt/live/techcoderx.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/techcoderx.com/privkey.pem;
+
+        include snippets/ssl-params.conf;
+
+        limit_req zone=mylimit burst=30 nodelay;
+
+        #add_header Access-Control-Allow-Origin *;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+
+        # Jussi endpoint
+        location / {
+                proxy_pass http://localhost:8080;
+                client_max_body_size 10240M;
+        }
+
+        # PeakD Extended API
+        location ~*(/badges|/suggestions|/feed|/posts|/communities) {
+                proxy_cache_valid any 1m;
+                proxy_cache peakdapi;
+                expires 1m;
+                proxy_cache_min_uses 2;
+                add_header X-Cache-Status $upstream_cache_status;
+                proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
+                proxy_pass http://your-peakd-api-url;
+                client_max_body_size 10240M;
+        }
+}
