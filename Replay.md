@@ -55,7 +55,7 @@ root soft     nofile         999999
 root hard     nofile         999999
 ```
 
-2. Append this to `/etc/pam.d/common-session:
+2. Append this to `/etc/pam.d/common-session`:
 ```
 session required pam_limits.so
 ```
