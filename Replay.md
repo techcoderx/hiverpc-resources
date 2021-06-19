@@ -40,3 +40,24 @@ plugin = market_history market_history_api
 # Transaction status
 plugin = transaction_status transaction_status_api
 ```
+
+## Increase open file limit
+
+1. Append this to `/etc/security/limits.conf`:
+```
+* soft     nproc          999999    
+* hard     nproc          999999   
+* soft     nofile         999999   
+* hard     nofile         999999
+root soft     nproc          999999    
+root hard     nproc          999999   
+root soft     nofile         999999   
+root hard     nofile         999999
+```
+
+2. Append this to `/etc/pam.d/common-session:
+```
+session required pam_limits.so
+```
+
+3. Logout and log back in.
