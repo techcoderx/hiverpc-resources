@@ -97,3 +97,11 @@ session required pam_limits.so
 ```
 
 3. Logout and log back in.
+
+## Create ramdisk
+
+```
+cd ~
+mkdir ramdisk
+sudo mount -t tmpfs -o rw,size=23G tmpfs ~/ramdisk
+```
