@@ -56,6 +56,11 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON -DSKIP_BY_TX_ID=O
 cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=OFF -DSKIP_BY_TX_ID=ON ..
 ```
 
+## One-liner clone
+```
+git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON -DSKIP_BY_TX_ID=OFF ..; make -j$(nproc); sudo make install;
+```
+
 ## Plugins
 ```
 # Basic
