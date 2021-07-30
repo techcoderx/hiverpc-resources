@@ -24,3 +24,13 @@ tar --use-compress-program="pigz -k -9" -cf destination.tar.gz sourcedir
 ```
 tar --use-compress-program="pigz -d" -xvf compressed.tar.gz destinationfolder
 ```
+
+#### Single file compression
+```
+pigz -k -9 filename
+```
+
+#### Single file decompression
+```
+pigz -dk filename.gz
+```
