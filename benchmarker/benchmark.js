@@ -3,12 +3,15 @@ const hive = require('@hiveio/hive-js')
 const allOps = require('@hiveio/hive-js/lib/auth/serializer').makeBitMaskFilter(Array.from(Array(73).keys()))
 
 const testArg = {
+    block: 38707240,
     user: 'techcoderx',
     queryObject: { tag: '', limit: 20 },
     queryFeed: { tag: 'techcoderx', limit: 20 },
     community: 'hive-196037',
     communityObject: { community: 'hive-196037' },
-    accountObject: { account: 'techcoderx' }
+    accountObject: { account: 'techcoderx' },
+    post: { author: 'techcoderx', permlink: 'techcoderx-is-officially-now-a-steem-witness' },
+    tx: 'e6352a698f5bfa5efc67bbd5e4cac27e960172ab'
 }
 
 const suites = [
@@ -19,9 +22,9 @@ const suites = [
     ['getChainProperties'],
     ['getVersion'],
     ['getHardforkVersion'],
-    ['getBlock',38707240],
-    ['getBlockHeader',38707240],
-    ['getTransaction','e6352a698f5bfa5efc67bbd5e4cac27e960172ab'],
+    ['getBlock',testArg.block],
+    ['getBlockHeader',testArg.block],
+    ['getTransaction',testArg.tx],
     ['getFeedHistory'],
     ['getCurrentMedianHistoryPrice'],
     ['getTicker'],
@@ -32,13 +35,13 @@ const suites = [
     ['getAccounts',[testArg.user]],
     ['getVestingDelegations',testArg.user,'',5],
     ['getAccountHistory',testArg.user,-1,100,...allOps],
-    ['getOpsInBlock',38707240,true],
+    ['getOpsInBlock',testArg.block,true],
     ['getWitnessCount'],
     ['getWitnessByAccount',testArg.user],
     ['getWitnessesByVote',-1,100],
     ['listProposals',[],10,'by_total_votes','ascending','votable'],
     ['listProposalVotes',[0],20,'by_proposal_voter','ascending','votable'],
-    [1,'rc_api.find_rc_accounts',{ accounts: ["techcoderx"] }],
+    [1,'rc_api.find_rc_accounts',{ accounts: [testArg.user] }],
     [1,'rc_api.get_resource_params',{}],
     [1,'rc_api.get_resource_pool',{}],
 
@@ -59,10 +62,10 @@ const suites = [
     ['getDiscussionsByBlog',testArg.queryFeed],
     ['getPostDiscussionsByPayout',testArg.queryObject],
     ['getCommentDiscussionsByPayout',testArg.queryObject],
-    ['getContent','techcoderx','techcoderx-is-officially-now-a-steem-witness'],
-    ['getContentReplies','techcoderx','techcoderx-is-officially-now-a-steem-witness'],
-    ['getRebloggedBy','techcoderx','techcoderx-is-officially-now-a-steem-witness'],
-    ['getActiveVotes','techcoderx','techcoderx-is-officially-now-a-steem-witness'],
+    ['getContent',testArg.post.author,testArg.post.permlink],
+    ['getContentReplies',testArg.post.author,testArg.post.permlink],
+    ['getRebloggedBy',testArg.post.author,testArg.post.permlink],
+    ['getActiveVotes',testArg.post.author,testArg.post.permlink],
 
     // bridge
     [null,'bridge'],
@@ -70,7 +73,7 @@ const suites = [
     [1,'bridge.unread_notifications',testArg.accountObject],
     [1,'bridge.get_community',{name:testArg.community,observer:testArg.user}],
     [1,'bridge.get_profile',testArg.accountObject],
-    [1,'bridge.get_post',{author:testArg.user,permlink:'techcoderx-is-officially-now-a-steem-witness',observer:testArg.user}],
+    [1,'bridge.get_post',{author:testArg.post.author,permlink:testArg.post.permlink,observer:testArg.user}],
     [1,'bridge.get_account_posts',{account:testArg.user,sort:'blog'}],
     [1,'bridge.get_ranked_posts',{sort:'trending',tag:'',observer:testArg.user}],
     [1,'bridge.get_trending_topics',{}],
