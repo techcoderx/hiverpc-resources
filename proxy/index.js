@@ -71,7 +71,7 @@ app.post('/',(req,res) => {
         target = config.routes[i].target
         break
     }
-    axios.post(config.targets[target],dataJson)
+    axios.post(config.targets[target],dataJson,{timeout:config.timeouts[target]*1000})
         .then((r) => res.send(r.data))
         .catch(() => res.send(internalError()))
     console.log(dataJson)
