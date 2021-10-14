@@ -37,10 +37,7 @@ const parseError = () => {
         error: {
             code: -32700,
             messgae: 'Parse error',
-            data: {
-                error_id: uuidv4(),
-                jussi_request_id: '0'
-            }
+            data: { error_id: uuidv4(), jussi_request_id: '0' }
         }
     }
 }
@@ -52,16 +49,13 @@ const internalError = () => {
         error: {
             code: -32603,
             messgae: 'Internal server error',
-            data: {
-                error_id: uuidv4(),
-                jussi_request_id: '0'
-            }
+            data: { error_id: uuidv4(), jussi_request_id: '0' }
         }
     }
 }
 
 // maybe we can serve a webpage here
-app.get('/',(req,res) => res.send({ info: process.env.PROXY_INFO || 'This is a dead simple hive JSONRPC proxy powered by 75 lines of NodeJS node.', jussi_num: -1, status: 'OK' }))
+app.get('/',(req,res) => res.send({ info: process.env.PROXY_INFO || 'This is a dead simple hive JSONRPC proxy powered by 69 lines of NodeJS node.', jussi_num: -1, status: 'OK' }))
 
 // actual jsonrpc route
 app.post('/',(req,res) => {
