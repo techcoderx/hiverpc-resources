@@ -20,7 +20,7 @@ app.use(bodyParser.raw({ verify: rawBodySaver, type: '*/*' }));
 const appbaseTranslator = (reqJson) => {
     if (reqJson.method !== 'call')
         return reqJson
-    else if (!Array.isArray(reqJson.params) || reqJson.params.length !== 3)
+    else if (!reqJson || !Array.isArray(reqJson.params) || reqJson.params.length !== 3)
         return null
     else return {
         id: 1,
