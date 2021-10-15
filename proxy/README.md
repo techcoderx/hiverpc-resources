@@ -1,6 +1,6 @@
 # hive-proxy
 
-A dead simple hive JSONRPC proxy powered by 69 lines of NodeJS code (excluding empty lines and comments).
+A dead simple hive JSON-RPC proxy powered by 69 lines of NodeJS code (excluding empty lines and comments).
 
 [Full post](https://peakd.com/general/@techcoderx/the-dead-simple-proxy)
 
@@ -21,4 +21,4 @@ node index.js
 ## Environment variables
 
 * `PORT`: HTTP port to listen to. Default: 3030
-* `PROXY_INFO`: Info to be displayed in the `/` GET API response. Default: `This is a dead simple hive JSONRPC proxy powered by 69 lines of NodeJS node.`
+* `PROXY_INFO`: Info to be displayed in the `/` GET API response. Default: `This is a dead simple hive JSON-RPC proxy powered by 69 lines of NodeJS node.`
