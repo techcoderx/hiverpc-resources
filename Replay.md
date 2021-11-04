@@ -113,4 +113,4 @@ sudo mount -t tmpfs -o rw,size=23G tmpfs ~/ramdisk
 
 ## ⚠️ Warning
 
-**Do not** place the data directory on a partition that is formatted with exFAT. Stick with ext4 on Linux. Not sure if this is a bug or a feature.
+**Do not** place the data directory on a partition that is formatted with exFAT as this will cause the disk to be unresponsive with `mount.exfat` using 100% CPU on single core. Stick with ext4 on Linux. Not sure if this is a bug or a feature.
