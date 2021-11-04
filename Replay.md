@@ -110,3 +110,7 @@ cd ~
 mkdir ramdisk
 sudo mount -t tmpfs -o rw,size=23G tmpfs ~/ramdisk
 ```
+
+## ⚠️ Warning
+
+**Do not** place the data directory on a partition that is formatted with exFAT. Stick with ext4 on Linux. Not sure if this is a bug or a feature.
