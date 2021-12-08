@@ -1,6 +1,6 @@
-const steem = require('steem')
+const steem = require('@hiveio/hive-js')
 
-steem.api.setOptions({ url: 'http://192.168.0.186:8093', useAppbaseApi: true })
+steem.api.setOptions({ url: 'http://192.168.1.4:8091', useAppbaseApi: true })
 
 let user = 'techcoderx'
 
