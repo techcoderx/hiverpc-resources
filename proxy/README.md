@@ -1,6 +1,6 @@
 # hive-proxy
 
-A dead simple hive JSON-RPC proxy powered by 69 lines of NodeJS code (excluding empty lines and comments).
+A dead simple hive JSON-RPC proxy powered by 69 lines of NodeJS code (excluding empty lines and comments). Only use when Jussi doesn't work.
 
 [Full post](https://peakd.com/general/@techcoderx/the-dead-simple-proxy)
 
