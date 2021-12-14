@@ -8,7 +8,7 @@
         "translate_to_appbase": true,
         "urls": [["hived","http://10.8.0.2:8091"]],
         "ttls": [["hived", 3]],
-        "timeouts": [["hived", 3]]
+        "timeouts": [["hived", 10]]
       },
       {
         "name": "appbase",
