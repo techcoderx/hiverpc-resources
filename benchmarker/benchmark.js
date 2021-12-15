@@ -1,6 +1,6 @@
 const nodes = require('./nodes')
 const hive = require('@hiveio/hive-js')
-const allOps = require('@hiveio/hive-js/lib/auth/serializer').makeBitMaskFilter(Array.from(Array(73).keys()))
+const allOps = require('@hiveio/hive-js/lib/auth/serializer').makeBitMaskFilter(Array.from(Array(84).keys()))
 
 const testArg = {
     block: 38707240,
