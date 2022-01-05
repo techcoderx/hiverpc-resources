@@ -12,6 +12,7 @@ module.exports = [
     'https://hive.roelandp.nl',
     'https://api.c0ff33a.uk',
     'https://api.deathwing.me',
+    'https://api.hive.blue',
     'https://hive-api.arcange.eu',
     'https://hived.emre.sh',
     'https://techcoderx.com'
