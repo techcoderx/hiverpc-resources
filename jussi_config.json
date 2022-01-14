@@ -78,6 +78,7 @@
           ["appbase.condenser_api.broadcast_block", 0],
           ["appbase.condenser_api.broadcast_transaction", 0],
           ["appbase.condenser_api.broadcast_transaction_synchronous", 0],
+          ["appbase.condenser_api.get_account_history", 10],
           ["appbase.condenser_api.get_account_votes", 20]
         ]
       },
