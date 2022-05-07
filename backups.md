@@ -22,7 +22,7 @@ tar --use-compress-program="pigz -k -9" -cf destination.tar.gz sourcedir
 
 #### Parallel directory decompression with pigz
 ```
-tar --use-compress-program="pigz -d" -xvf compressed.tar.gz destinationfolder
+tar --use-compress-program="pigz -d" -xvf compressed.tar.gz -C destinationfolder
 ```
 
 #### Single file compression
