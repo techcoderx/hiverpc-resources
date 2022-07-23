@@ -34,3 +34,8 @@ pigz -k -9 filename
 ```
 pigz -dk filename.gz
 ```
+
+#### Using `pg_dump`
+```
+pg_dump -U <postgres_username> -Fc <db_name> > filename.dump
+```
