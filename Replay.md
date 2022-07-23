@@ -33,30 +33,27 @@ sudo apt-get install -y \
 
 ## CMake Build
 
-Valid as of v1.25.
+Valid as of v1.26.
 
 #### AH node
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON -DSKIP_BY_TX_ID=OFF ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON ..
 ```
 
 #### Consensus node
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=OFF -DSKIP_BY_TX_ID=ON ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=OFF ..
 ```
 
 ## One-liner clone
 ```
-git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON -DSKIP_BY_TX_ID=OFF ..; make -j$(nproc); sudo make install;
+git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON ..; make -j$(nproc); sudo make install;
 ```
 
 ## Plugins
 ```
 # Basic
 plugin = witness webserver p2p json_rpc database_api network_broadcast_api condenser_api block_api rc_api
-
-# Account history
-plugin = account_history_rocksdb account_history_api
 
 # Reputation
 plugin = reputation reputation_api
@@ -69,6 +66,9 @@ plugin = market_history market_history_api
 
 # Transaction status
 plugin = transaction_status transaction_status_api
+
+# SQL serializer
+plugin = sql_serializer
 ```
 
 ## Increase open file limit
@@ -98,6 +98,12 @@ session required pam_limits.so
 cd ~
 mkdir ramdisk
 sudo mount -t tmpfs -o rw,size=23G tmpfs ~/ramdisk
+```
+
+## Compress `block_log`
+Located in `programs/util/compress_block_log`.
+```
+./compress_block_log -j $(nproc) -i /src/uncompressed/blocklog/folder -o /dest/blocklog/folder
 ```
 
 ## ⚠️ Warning
