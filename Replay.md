@@ -28,18 +28,7 @@ sudo apt-get install -y \
     perl \
     python3 \
     python3-jinja2 \
-    libboost-chrono-dev \
-    libboost-context-dev \
-    libboost-coroutine-dev \
-    libboost-date-time-dev \
-    libboost-filesystem-dev \
-    libboost-iostreams-dev \
-    libboost-locale-dev \
-    libboost-program-options-dev \
-    libboost-serialization-dev \
-    libboost-system-dev \
-    libboost-test-dev \
-    libboost-thread-dev
+    libboost-all-dev
 ```
 
 ## CMake Build
