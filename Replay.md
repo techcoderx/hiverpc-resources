@@ -31,6 +31,30 @@ sudo apt-get install -y \
     libboost-all-dev
 ```
 
+## HAF additional dependencies
+```
+sudo apt-get install -y postgresql-server-dev-14 libpqxx-dev
+```
+
+## HAF configure database
+As `postgres` user:
+```
+# Roles
+CREATE ROLE hived_group WITH NOLOGIN;
+CREATE ROLE hive_applications_group WITH NOLOGIN;
+CREATE ROLE hived LOGIN PASSWORD 'hivedpass' INHERIT IN ROLE hived_group;
+CREATE ROLE application LOGIN PASSWORD 'applicationpass' INHERIT IN ROLE hive_applications_group;
+
+# Database used by hived
+CREATE DATABASE block_log;
+
+# Use database
+\c block_log
+
+# sql_serializer plugin on db
+CREATE EXTENSION hive_fork_manager CASCADE;
+```
+
 ## CMake Build
 
 Valid as of v1.26.
