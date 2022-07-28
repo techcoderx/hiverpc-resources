@@ -46,6 +46,9 @@ CREATE ROLE hived LOGIN PASSWORD 'hivedpass' INHERIT IN ROLE hived_group;
 CREATE ROLE application LOGIN PASSWORD 'applicationpass' INHERIT IN ROLE hive_applications_group;
 CREATE ROLE haf_app_admin WITH LOGIN CREATEROLE INHERIT IN ROLE hive_applications_group;
 
+# Set password if needed
+ALTER ROLE role_name WITH PASSWORD 'rolepass';
+
 # Database used by hived
 CREATE DATABASE block_log;
 
