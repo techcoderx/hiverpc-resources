@@ -59,6 +59,16 @@ CREATE DATABASE block_log;
 CREATE EXTENSION hive_fork_manager CASCADE;
 ```
 
+## Hafah required permissions
+For Hafah python.
+```
+GRANT USAGE ON SCHEMA hafah_python TO haf_app_admin;
+GRANT SELECT ON ALL TABLES IN SCHEMA hafah_python TO haf_app_admin;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA hafah_python TO haf_app_admin;
+GRANT USAGE ON SCHEMA hive TO haf_app_admin;
+GRANT SELECT ON ALL TABLES IN SCHEMA hive TO haf_app_admin;
+```
+
 ## CMake Build
 
 Valid as of v1.26.
