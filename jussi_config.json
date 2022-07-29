@@ -14,9 +14,10 @@
         "name": "appbase",
         "urls": [
           ["appbase", "http://10.8.0.2:8091"],
-          ["appbase.account_history_api", "http://10.8.0.2:8091"],
-          ["appbase.condenser_api.get_account_history", "http://10.8.0.2:8091"],
-          ["appbase.condenser_api.get_ops_in_block", "http://10.8.0.2:8091"],
+          ["appbase.account_history_api", "http://10.8.0.2:8093"],
+          ["appbase.condenser_api.get_account_history", "http://10.8.0.2:8093"],
+          ["appbase.condenser_api.get_ops_in_block", "http://10.8.0.2:8093"],
+          ["appbase.condenser_api.get_transaction", "http://10.8.0.2:8093"],
           ["appbase.condenser_api.get_followers", "http://10.8.0.2:8092"],
           ["appbase.condenser_api.get_following", "http://10.8.0.2:8092"],
           ["appbase.condenser_api.get_follow_count", "http://10.8.0.2:8092"],
