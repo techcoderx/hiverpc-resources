@@ -91,7 +91,7 @@ git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --i
 ## Plugins
 ```
 # Basic
-plugin = witness webserver p2p json_rpc database_api network_broadcast_api condenser_api block_api rc_api
+plugin = witness webserver p2p json_rpc database_api network_broadcast_api condenser_api block_api rc_api wallet_bridge_api
 
 # Reputation
 plugin = reputation reputation_api
