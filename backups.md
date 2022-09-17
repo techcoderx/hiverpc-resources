@@ -7,11 +7,8 @@
 
 #### hived
 0. Shutdown hived
-1. Copy block_log, block_log.index
-2. Compress rocksdb state files
-3. Move compressed rocksdb state file
-4. Compress rocksdb account history files
-5. Move compressed rocksdb account history file
+1. Resume copy block_log, block_log.artifacts
+2. Copy shared_memory.bin
 
 ## Useful commands
 
@@ -39,3 +36,6 @@ pigz -dk filename.gz
 ```
 pg_dump -U <postgres_username> -Fc <db_name> > filename.dump
 ```
+
+#### HAF DB
+https://gitlab.syncad.com/hive/haf/-/tree/develop/src/hive_fork_manager/tools/pg_dump
