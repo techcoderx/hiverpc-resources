@@ -23,7 +23,7 @@ const getProducerRewards = (last, cb, total = 0, count = 0) => {
                 total += parseFloat(h[0][1].op[1].vesting_shares)
                 count++
             }
-        if ((currentTs - durationMs) < new Date(h[0][1].timestamp).getTime())
+        if (h.length > 0 && (currentTs - durationMs) < new Date(h[0][1].timestamp).getTime())
             getProducerRewards(h[0][0]-1,cb,total,count)
         else
             cb(Math.round(total*1000000)/1000000,count)
