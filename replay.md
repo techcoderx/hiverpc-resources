@@ -111,7 +111,7 @@ plugin = sql_serializer
 
 ## SQL serializer
 ```
-psql-url = dbname=block_log user=postgres password=pass hostaddr=127.0.0.1 port=5432
+psql-url = dbname=block_log user=hived password=hivedpass hostaddr=127.0.0.1 port=5432
 psql-index-threshold = 1000000
 psql-operations-threads-number = 5
 psql-transactions-threads-number = 2
@@ -147,7 +147,7 @@ session required pam_limits.so
 ```
 cd ~
 mkdir ramdisk
-sudo mount -t tmpfs -o rw,size=23G tmpfs ~/ramdisk
+sudo mount -t tmpfs -o rw,size=24G tmpfs ~/ramdisk
 ```
 
 ## Compress `block_log`
