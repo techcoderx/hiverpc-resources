@@ -71,21 +71,11 @@ GRANT SELECT ON ALL TABLES IN SCHEMA hive TO haf_app_admin;
 
 ## CMake Build
 
-Valid as of v1.26.
-
-#### AH node
-```
-cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON ..
-```
-
-#### Consensus node
-```
-cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=OFF ..
-```
+Valid as of v1.27.
 
 ## One-liner clone
 ```
-git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCOLLECT_ACCOUNT_METADATA=ON ..; make -j$(nproc); sudo make install;
+git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..; make -j$(nproc); sudo make install;
 ```
 
 ## Plugins
@@ -104,6 +94,9 @@ plugin = market_history market_history_api
 
 # Transaction status
 plugin = transaction_status transaction_status_api
+
+# State snapshot
+plugin = state_snapshot
 
 # SQL serializer
 plugin = sql_serializer
@@ -147,7 +140,7 @@ session required pam_limits.so
 ```
 cd ~
 mkdir ramdisk
-sudo mount -t tmpfs -o rw,size=24G tmpfs ~/ramdisk
+sudo mount -t tmpfs -o rw,size=25G tmpfs ~/ramdisk
 ```
 
 ## Compress `block_log`
