@@ -30,7 +30,7 @@
     "^database_api.(list_proposal_votes|list_witness_votes)$": {
       "target": "hived"
     },
-    "^condenser_api.(get_witness_by_account|get_witnesses_by_vote|lookup_accounts|get_vesting_delegations|get_hardfork_version|broadcast_(.*)|get_transaction)$": {
+    "^condenser_api.(get_witness_by_account|get_witnesses_by_vote|lookup_accounts|get_vesting_delegations|get_hardfork_version|broadcast_(.*))$": {
       "target": "hived"
     },
     "^condenser_api.(get_account_history|get_ops_in_block|get_transaction$)$": {
