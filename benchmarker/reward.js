@@ -3,6 +3,8 @@ const producer_reward_op = require('@hiveio/hive-js/lib/auth/serializer').makeBi
 const witness = process.argv[2]
 const days = parseInt(process.argv[3])
 
+hive.api.setOptions({ url: 'https://techcoderx.com' })
+
 if (!witness || witness === '--help' || witness === '-help' || witness === '-h' || isNaN(days)) {
     console.log('Usage: node reward.js <witness> <days>')
     process.exit(0)
