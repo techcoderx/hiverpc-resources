@@ -1,0 +1,16 @@
+[Unit]
+Description=Hivemind HAF sync
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+RuntimeMaxSec=6h
+User=techcoderx
+ExecStart=/home/techcoderx/.local/bin/hive sync --database-url 'postgresql://hivemind_app:hivemindpass@localhost:5432/block_log'
+
+[Install]
+WantedBy=multi-user.target
