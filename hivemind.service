@@ -1,6 +1,7 @@
 [Unit]
 Description=Hivemind HAF sync
 After=network.target
+Wants=postgresql.service
 StartLimitBurst=3
 StartLimitIntervalSec=900
 
