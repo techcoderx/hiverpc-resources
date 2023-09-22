@@ -1,0 +1,21 @@
+[Unit]
+Description=VSC HAF Server
+After=network.target
+Wants=postgresql.service
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=techcoderx
+Environment="PGRST_SERVER_PORT=12000"
+Environment="PGRST_DB_URI=postgresql://vsc_app:vscpass@localhost:5432/block_log"
+Environment="PGRST_DB_SCHEMA=vsc_api"
+Environment="PGRST_DB_ANON_ROLE=vsc_user"
+Environment="PGRST_DB_ROOT_SPEC=home"
+ExecStart=/usr/local/bin/postgrest
+
+[Install]
+WantedBy=multi-user.target

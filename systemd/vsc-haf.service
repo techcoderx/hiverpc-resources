@@ -1,0 +1,19 @@
+[Unit]
+Description=VSC HAF sync
+After=network.target
+Wants=postgresql.service
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=techcoderx
+WorkingDirectory=/home/techcoderx/vsc-haf
+Environment="VSC_HAF_POSTGRES_URL=postgres://vsc_app:vscpass@localhost:5432/block_log"
+Environment="VSC_HAF_LOG_LEVEL=info"
+ExecStart=/home/techcoderx/.nvm/versions/node/v18.10.0/bin/node dist/index.js
+
+[Install]
+WantedBy=multi-user.target
