@@ -1,0 +1,16 @@
+[Unit]
+Description=Drone Server
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=techcoderx
+WorkingDirectory=/home/techcoderx/drone/target/release
+ExecStart=/home/techcoderx/drone/target/release/drone
+
+[Install]
+WantedBy=multi-user.target
