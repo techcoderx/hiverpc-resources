@@ -1,0 +1,16 @@
+[Unit]
+Description=Autossh Reverse SSH Tunnel
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+TimeoutSec=60
+User=techcoderx
+ExecStart=/usr/bin/autossh -M 0 -N -R 13001:localhost:13001 -R 4568:localhost:4568 <insert-ip-here>
+
+[Install]
+WantedBy=multi-user.target
