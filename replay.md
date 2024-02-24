@@ -19,8 +19,10 @@ sudo apt-get install -y \
     libbz2-dev \
     libsnappy-dev \
     libssl-dev \
+    liburing-dev \
     libtool \
     make \
+    ninja-build \
     pkg-config \
     doxygen \
     libncurses5-dev \
@@ -75,7 +77,7 @@ Valid as of v1.27.
 
 ## One-liner clone
 ```
-git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..; make -j$(nproc); sudo make install;
+git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -GNinja ..; ninja; sudo ninja install;
 ```
 
 ## Plugins
