@@ -4,20 +4,16 @@ Simple script that sends a `push` event to an Uptime Kuma instance every few sec
 
 ## Requirements
 
-* NodeJS >=18
-
-## Configuration
-
-Copy the example config first:
-```bash
-cp config.example.json config.json
-```
-
-* `rpc`: `hived` JSON RPC URL to monitor
-* `intervalSeconds`: Number of seconds between push events
-* `pushUrl`: The push URL from Uptime Kuma
+* `curl` and `jq`
 
 ## Run script
 ```bash
-node index.js
+./run.sh --rpc='http://hivedurl:8091' --push-url='https://yourpushurl.example'
+```
+
+## Crontab
+
+Run every minute:
+```cron
+* * * * * /path/to/run.sh --rpc='http://hivedurl:8091' --push-url='https://yourpushurl.example'
 ```
