@@ -1,5 +1,0 @@
-{
-    "rpc": "http://localhost:8091",
-    "intervalSeconds": 30,
-    "pushUrl": ""
-}
