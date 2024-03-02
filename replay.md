@@ -152,8 +152,20 @@ Located in `programs/util/compress_block_log`.
 ```
 
 ## Postgresql db size
-```
+
+By db name:
+```pgsql
 SELECT pg_size_pretty(pg_database_size('dbname'));
+```
+
+By schema:
+```pgsql
+SELECT schemaname,
+    pg_size_pretty(SUM(pg_total_relation_size(relid))) AS total_size,
+    pg_size_pretty(SUM(pg_table_size(relid))) AS table_size,
+    pg_size_pretty(SUM(pg_indexes_size(relid))) AS indexes_size
+FROM pg_catalog.pg_statio_user_tables
+GROUP BY schemaname;
 ```
 
 ## ⚠️ Warning
