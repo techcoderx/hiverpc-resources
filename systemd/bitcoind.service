@@ -9,7 +9,7 @@ Type=simple
 Restart=always
 RestartSec=3
 User=techcoderx
-ExecStart=/usr/bin/bitcoind -datadir=/home/techcoderx/bitcoin/data
+ExecStart=/usr/bin/bitcoind -datadir=/home/techcoderx/bitcoin/data -server -txindex -rpcuser=user -rpcpassword=pass -blocksdir=/path/to/btc/blocks
 
 [Install]
 WantedBy=multi-user.target
