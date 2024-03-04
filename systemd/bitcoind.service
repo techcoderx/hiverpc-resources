@@ -1,0 +1,15 @@
+[Unit]
+Description=BTC node daemon
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=techcoderx
+ExecStart=/usr/bin/bitcoind -datadir=/home/techcoderx/bitcoin/data
+
+[Install]
+WantedBy=multi-user.target
