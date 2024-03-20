@@ -1,0 +1,25 @@
+[Unit]
+Description=ElectrumX Server
+After=bitcoind.service
+Requires=bitcoind.service
+StartLimitBurst=3
+StartLimitIntervalSec=900
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+TimeoutStopSec=600
+User=user
+Environment=COIN=Bitcoin
+Environment=DB_DIRECTORY=/home/user/bitcoin/electrumx-data
+Environment=DAEMON_URL=http://user:pass@127.0.0.1:8332
+Environment=PEER_DISCOVERY=self
+Environment=PEER_ANNOUNCE=
+Environment=SERVICES=tcp://:50001,ssl://:50002,wss://:50004,rpc://:50010
+Environment=SSL_CERTFILE=/home/user/bitcoin/electrumx-certs/server.crt
+Environment=SSL_KEYFILE=/home/user/bitcoin/electrumx-certs/server.key
+ExecStart=/home/user/bitcoin/electrumx/venv/bin/electrumx_server
+
+[Install]
+WantedBy=multi-user.target
