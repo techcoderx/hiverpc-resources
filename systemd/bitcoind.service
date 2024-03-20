@@ -1,6 +1,7 @@
 [Unit]
 Description=BTC node daemon
-After=network.target
+Requires=zfs.target network.target
+After=zfs.target network.target
 StartLimitBurst=3
 StartLimitIntervalSec=900
 
