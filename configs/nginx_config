@@ -34,16 +34,4 @@ server {
                 proxy_pass http://localhost:8080;
                 client_max_body_size 10240M;
         }
-
-        # PeakD Extended API
-        location ~*(/badges|/suggestions|/feed|/posts|/communities) {
-                proxy_cache_valid any 1m;
-                proxy_cache peakdapi;
-                expires 1m;
-                proxy_cache_min_uses 2;
-                add_header X-Cache-Status $upstream_cache_status;
-                proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
-                proxy_pass http://your-peakd-api-url;
-                client_max_body_size 10240M;
-        }
 }
