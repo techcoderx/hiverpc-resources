@@ -1,4 +1,3 @@
-proxy_cache_path /tmp/cache/peakdapi levels=1:2 keys_zone=peakdapi:10m max_size=1g inactive=1m;
 limit_req_zone $binary_remote_addr zone=mylimit:10m rate=20r/s;
 
 server {
