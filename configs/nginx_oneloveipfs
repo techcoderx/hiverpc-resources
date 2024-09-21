@@ -1,0 +1,125 @@
+server {
+        listen 80;
+        listen [::]:80;
+        server_name tusd.oneloveipfs.com;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        server_name tusd.oneloveipfs.com;
+        ssl_certificate /etc/letsencrypt/live/tusd.oneloveipfs.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/tusd.oneloveipfs.com/privkey.pem;
+
+        include snippets/ssl-params.conf;
+
+        #add_header Access-Control-Allow-Origin *;
+
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-NginX-Proxy true;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+
+        location / {
+                proxy_request_buffering  off;
+                proxy_buffering off;
+                proxy_http_version 1.1;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_pass http://localhost:1080;
+                client_max_body_size 0;
+        }
+}
+
+limit_req_zone $binary_remote_addr zone=uploaderlimit:10m rate=20r/s;
+
+server {
+        listen 80;
+        listen [::]:80;
+        server_name uploader.oneloveipfs.com;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        server_name uploader.oneloveipfs.com;
+        ssl_certificate /etc/letsencrypt/live/uploader.oneloveipfs.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/uploader.oneloveipfs.com/privkey.pem;
+
+        include snippets/ssl-params.conf;
+
+        limit_req zone=uploaderlimit burst=50 nodelay;
+
+        #add_header Access-Control-Allow-Origin *;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+
+        location / {
+                proxy_pass http://localhost:3005;
+                client_max_body_size 0M;
+        }
+
+        location /uploadVideoResumable {
+                return 404 https://localhost:3005/404;
+        }
+
+        location /encoder/self/all {
+                return 404 http://localhost:3005/404;
+        }
+
+        location /spk/pin/statuses {
+                return 404 http://localhost:3005/404;
+        }
+}
+
+limit_req_zone $binary_remote_addr zone=ipfslimit:10m rate=5r/s;
+include snippets/ipfs_dmca.conf;
+
+server {
+        listen 80;
+        listen [::]:80;
+        server_name video.oneloveipfs.com;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        server_name video.oneloveipfs.com;
+        ssl_certificate /etc/letsencrypt/live/video.oneloveipfs.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/video.oneloveipfs.com/privkey.pem;
+
+        include snippets/ssl-params.conf;
+
+        limit_req zone=ipfslimit burst=25 nodelay;
+
+        #add_header Access-Control-Allow-Origin *;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+
+        if ($new_uri) {
+                rewrite ^ $new_uri permanent;
+        }
+
+        location ~*(/ipfs|/list) {
+                proxy_pass http://localhost:8080;
+                client_max_body_size 0M;
+        }
+}
