@@ -155,7 +155,7 @@ Located in `programs/util/compress_block_log`.
 
 By db name:
 ```pgsql
-SELECT pg_size_pretty(pg_database_size('dbname'));
+SELECT pg_size_pretty(pg_database_size('haf_block_log'));
 ```
 
 By schema:
