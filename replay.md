@@ -80,6 +80,17 @@ Valid as of v1.27.
 git clone https://gitlab.syncad.com/hive/hive; cd hive; git submodule update --init --recursive; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -GNinja ..; ninja; sudo ninja install;
 ```
 
+## Docker Build
+```
+git clone https://gitlab.syncad.com/hive/hive
+cd hive
+git submodule update --init --recursive
+./scripts/ci-helpers/build_ci_base_image.sh
+cd ..
+mkdir hived_workdir && cd hived_workdir
+../hive/scripts/ci-helpers/build_instance.sh develop ../hive registry.gitlab.syncad.com/hive/hive --export-binaries=./
+```
+
 ## Plugins
 ```
 # Basic
