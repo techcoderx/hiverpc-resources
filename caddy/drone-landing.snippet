@@ -1,0 +1,7 @@
+@get_to_root {
+    method GET
+    path / /health
+}
+handle @get_to_root {
+    reverse_proxy http://{$JSONRPC_API_SERVER_NAME}:9000
+}
