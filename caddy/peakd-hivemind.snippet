@@ -1,0 +1,15 @@
+@peakd_hivemind_endpoint {
+  method GET
+  path /badges/* /feed/* /posts /tags/* /communities/* /suggestions/*
+}
+handle @peakd_hivemind_endpoint {
+  reverse_proxy http://peakd-hivemind-plugin:3000
+}
+
+@peakd_hivemind_endpoint_post {
+  method POST
+  path /posts
+}
+handle @peakd_hivemind_endpoint_post {
+  reverse_proxy http://peakd-hivemind-plugin:3000
+}
