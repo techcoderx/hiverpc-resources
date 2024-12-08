@@ -1,0 +1,7 @@
+@health_endpoint {
+  method GET
+  path /health
+}
+handle @health_endpoint {
+  reverse_proxy http://drone:9000
+}
