@@ -1,0 +1,8 @@
+services:
+  beescript:
+    image: beescript:latest
+    build: .
+    profiles:
+      - servers
+    networks:
+      - haf-network
