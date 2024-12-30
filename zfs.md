@@ -51,12 +51,12 @@ sudo zfs set compression=on <pool_name>
 
 ## Get compression status
 ```
-sudo zfs get compression <pool_name>
+sudo zfs get compression [pool_name]
 ```
 
 ## Get compression ratio
 ```
-sudo zfs get compressratio <pool_name>
+sudo zfs get compressratio [pool_name]
 ```
 
 ## Get ARC RAM usage
