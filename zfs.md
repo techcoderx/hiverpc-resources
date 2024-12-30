@@ -65,7 +65,7 @@ awk '/^size/ { print $1 " " $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats
 ```
 
 ## Set ARC RAM limit
-8GB in this example in bytes.
+16GB in this example in bytes.
 ```
-echo "options zfs zfs_arc_max=8589934592" | sudo tee -a /etc/modprobe.d/zfs.conf
+echo "options zfs zfs_arc_max=17179869184" | sudo tee -a /etc/modprobe.d/zfs.conf
 ```
