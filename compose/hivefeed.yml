@@ -1,0 +1,16 @@
+services:
+  hivefeed:
+    image: hivefeed-js:latest
+    container_name: hivefeed
+    network_mode: 'host'
+    restart: unless-stopped
+    volumes:
+      - ./config.json:/opt/hivefeed/config.json
+    command:
+      - './app.js'
+      - 'publishnow'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1m'
+        max-file: '1'
