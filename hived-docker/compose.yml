@@ -1,0 +1,25 @@
+services:
+  hived:
+    stdin_open: true
+    tty: true
+    container_name: ${CONTAINER_NAME:-hived}
+    image: ${HIVED_IMAGE:-${HIVED_REGISTRY:-registry.gitlab.syncad.com/hive}/hive}:${HIVED_VERSION}
+    environment:
+      HIVED_UID: ${HIVED_UID:-1000}
+      SHM_DIR: /home/hived/shm_dir
+    ports:
+      - ${HTTP_ENDPOINT:-8091}:8091
+      - ${WS_ENDPOINT:-8090}:8090
+      - ${P2P_ENDPOINT:-2001}:2001
+    volumes:
+      - ${HIVED_DATA_DIR}:/home/hived/datadir
+      - ${HIVED_SHM_DIR}:/home/hived/shm_dir
+    entrypoint:
+      - /home/hived_admin/docker_entrypoint.sh
+      - ${ARGUMENTS:-}
+    stop_grace_period: 30s
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
