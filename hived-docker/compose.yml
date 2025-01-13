@@ -19,7 +19,7 @@ services:
       - ${ARGUMENTS:-}
     stop_grace_period: 30s
     logging:
-      driver: 'json-file'
+      driver: local
       options:
-        max-size: '10m'
-        max-file: '3'
+        max-size: 10m
+        max-file: 3
