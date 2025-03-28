@@ -20,6 +20,7 @@ Environment=SERVICES=tcp://:50001,ssl://:50002,wss://:50004,rpc://:50010
 Environment=SSL_CERTFILE=/home/user/bitcoin/electrumx-certs/server.crt
 Environment=SSL_KEYFILE=/home/user/bitcoin/electrumx-certs/server.key
 ExecStart=/home/user/bitcoin/electrumx/venv/bin/electrumx_server
+LimitNOFILE=8192
 
 [Install]
 WantedBy=multi-user.target
