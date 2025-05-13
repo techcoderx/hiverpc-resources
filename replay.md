@@ -150,10 +150,16 @@ session required pam_limits.so
 
 ## Create ramdisk
 
-```
+```sh
 cd ~
 mkdir ramdisk
 sudo mount -t tmpfs -o rw,size=25G tmpfs ~/ramdisk
+```
+
+## Transfer state file over network
+
+```sh
+rsync -avS --progress <source> <destination>
 ```
 
 ## Compress `block_log`
