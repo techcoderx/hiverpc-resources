@@ -94,6 +94,7 @@
       const score = calcScore(user, outgoing)
       document.getElementById('voting-csi-metric').innerText = `Voting CSI: ${score.csi.toFixed(2)} (${(100*score.self/score.total).toFixed(2)}% self, ${score.count} upvotes, ${outgoing.length} accounts, last ${lastDays} days)`
       outgoing = outgoing.sort((a, b) => sortOpt === 'weight' ? b.weights - a.weights : b.count - a.count)
+      upvotesTbody.innerHTML = ''
       for (let a in outgoing) {
         upvotesTbody.innerHTML += '<tr><td></td><td></td><td></td></tr>'
         upvotesTbody.children[upvotesTbody.children.length-1].children[0].innerText = outgoing[a].author
