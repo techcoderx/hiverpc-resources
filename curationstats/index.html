@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curation Summary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+</head>
+<body style="padding: 50px;" data-bs-theme="dark">
+  <h1>Curation Summary</h1>
+  <div class="alert alert-danger mb-0 mt-3 p-2" role="alert" id="alert" style="display: none;"></div>
+  <form class="row row-cols-lg-auto g-3 my-2 align-items-center">
+    <div class="col-12">
+      <label class="visually-hidden" for="username">Username</label>
+      <div class="input-group">
+        <div class="input-group-text">@</div>
+        <input type="text" class="form-control" id="username" placeholder="Username">
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input id="last-days" type="text" aria-label="Last days (1 to 30)" class="form-control" placeholder="Last days (1 to 30)" value="7">
+        <span class="input-group-text">Days</span>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-danger" id="submit-btn">Submit</button>
+    </div>
+  </form>
+  <div class="my-4">
+    <h4 id="voting-csi-metric">Voting CSI: ???</h4>
+  </div>
+  <div class="input-group" style="max-width: 250px;">
+    <div class="input-group-text">Sort</div>
+    <select class="form-select" aria-label="Sorting option" id="sorting-option">
+      <option value="weight" selected>By Weight</option>
+      <option value="count">By Count</option>
+    </select>
+  </div>
+  <div class="d-flex flex-column flex-lg-row align-items-center">
+    <div class="p-3" style="width: 450px;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Author</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Count</th>
+          </tr>
+        </thead>
+        <tbody id="upvotes-tbody"></tbody>
+      </table>
+    </div>
+    <div class="w-75 p-3 align-self-lg-start" style="max-width: 640px;">
+      <canvas id="upvotes-chart"></canvas>
+    </div>
+  </div>
+</body>
+<script>
+  const upvotesTbody = document.getElementById('upvotes-tbody')
+  const chart = new Chart(document.getElementById('upvotes-chart'), {
+    type: 'doughnut'
+  })
+  let outgoing = []
+  const calcScore = (author, summary) => {
+    const vote_count = summary.reduce((p, c) => p+c.count, 0)
+    const total_weights = summary.reduce((p, c) => p+c.weights, 0)
+    const author_idx = summary.findIndex((v) => v.author === author)
+    const self_vw_total = author_idx > -1 ? summary[author_idx].weights : 0
+    const FULL_WEIGHT = 10000
+
+    const c = total_weights / FULL_WEIGHT
+    const d = self_vw_total / FULL_WEIGHT
+    const f = 0 < d ? 100 / c * d : 0
+    let g = 1
+
+    for (var h = 0; h < summary.length; h++)
+        if (summary[h].author !== author) {
+            const k = 100 / c * summary[h].weights / FULL_WEIGHT,
+                l = summary[h].count,
+                m = k / 5;
+            g = 1 < m ? g - 2.5 * m : g + k;
+            7 > l && (g += 1)
+        }
+    let a = (100 - f) / 100 * g / 1E3 * c;
+    0 === f ? a += 1 : 100 === parseInt(f) && (a = -.1 * d)
+    return { csi: a, self: self_vw_total, total: total_weights, count: vote_count }
+  }
+  const render = () => {
+    const user = document.getElementById('username').value.trim().toLowerCase()
+    const lastDays = parseInt(document.getElementById('last-days').value.trim())
+    const sortOpt = document.getElementById('sorting-option').value
+    if (!!outgoing && outgoing.length >= 1) {
+      const score = calcScore(user, outgoing)
+      document.getElementById('voting-csi-metric').innerText = `Voting CSI: ${score.csi.toFixed(2)} (${(100*score.self/score.total).toFixed(2)}% self, ${score.count} upvotes, ${outgoing.length} accounts, last ${lastDays} days)`
+      outgoing = outgoing.sort((a, b) => sortOpt === 'weight' ? b.weights - a.weights : b.count - a.count)
+      for (let a in outgoing) {
+        upvotesTbody.innerHTML += '<tr><td></td><td></td><td></td></tr>'
+        upvotesTbody.children[upvotesTbody.children.length-1].children[0].innerText = outgoing[a].author
+        upvotesTbody.children[upvotesTbody.children.length-1].children[1].innerText = (100 * outgoing[a].weights / score.total).toFixed(2)+'%'
+        upvotesTbody.children[upvotesTbody.children.length-1].children[2].innerText = outgoing[a].count
+      }
+      document.getElementById('upvotes-chart').style.display = 'block'
+      chart.data = {
+        labels: outgoing.map(v => v.author).slice(0, 50),
+        datasets: [{
+          data: outgoing.map(v => sortOpt === 'weight' ? (100*v.weights/score.total) : v.count).slice(0, 50),
+          hoverOffset: 4
+        }]
+      }
+      chart.update()
+    } else {
+      document.getElementById('upvotes-chart').style.display = 'none'
+      document.getElementById('voting-csi-metric').innerText = `No outgoing votes for this account in the last ${lastDays} days`
+    }
+  }
+  const loadStats = async () => {
+    document.getElementById('alert').style.display = 'none'
+    upvotesTbody.innerHTML = ''
+    const user = document.getElementById('username').value.trim().toLowerCase()
+    const lastDays = parseInt(document.getElementById('last-days').value.trim())
+    if (isNaN(lastDays) || lastDays < 1 || lastDays > 30) {
+      document.getElementById('alert').innerText = 'Last days must be between 1 and 30'
+      return document.getElementById('alert').style.display = 'block'
+    }
+    outgoing = await (await fetch(`https://vsc.techcoderx.com/personal/vote-summary/outgoing/${user}/${lastDays}/1`)).json()
+    render()
+  }
+  document.getElementById('submit-btn').onclick = (evt) => {
+    evt.preventDefault()
+    loadStats()
+  }
+  document.getElementById('sorting-option').onchange = (evt) => {
+    evt.preventDefault()
+    render()
+  }
+  const urlParams = new URLSearchParams(window.location.search);
+  document.getElementById('username').value = urlParams.get('user') || 'techcoderx'
+  loadStats()
+</script>
+</html>
