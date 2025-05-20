@@ -75,13 +75,13 @@
     let g = 1
 
     for (var h = 0; h < summary.length; h++)
-        if (summary[h].author !== author) {
-            const k = 100 / c * summary[h].weights / FULL_WEIGHT,
-                l = summary[h].count,
-                m = k / 5;
-            g = 1 < m ? g - 2.5 * m : g + k;
-            7 > l && (g += 1)
-        }
+      if (summary[h].author !== author) {
+        const k = 100 / c * summary[h].weights / FULL_WEIGHT,
+          l = summary[h].count,
+          m = k / 5;
+        g = 1 < m ? g - 2.5 * m : g + k;
+        7 > l && (g += 1)
+      }
     let a = (100 - f) / 100 * g / 1E3 * c;
     0 === f ? a += 1 : 100 === parseInt(f) && (a = -.1 * d)
     return { csi: a, self: self_vw_total, total: total_weights, count: vote_count }
