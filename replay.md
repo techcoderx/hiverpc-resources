@@ -162,6 +162,12 @@ sudo mount -t tmpfs -o rw,size=25G tmpfs ~/ramdisk
 rsync -avS --progress <source> <destination>
 ```
 
+#### Resumable
+
+```sh
+rsync -avSP <source> <destination>
+```
+
 ## Compress `block_log`
 Located in `programs/util/compress_block_log`.
 ```
