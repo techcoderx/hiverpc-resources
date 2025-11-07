@@ -97,7 +97,7 @@ mkdir hived_workdir && cd hived_workdir
 
 Follow the Linux steps above, but before running `build_instance.sh`, run `brew install coreutils` and modify `realpath` to `grealpath` in `build_instance.sh`.
 
-In Docker Desktop, go to `Settings > Resources > Advanced` and set the memory limit and swap to maximum possible values. For Macs with 16GB of RAM, set the CPU limit to 4 threads to prevent OOM.
+In Docker Desktop, go to `Settings > Resources > Advanced` and set the memory limit and swap to maximum possible values. For Macs with 16GB of RAM, set the CPU limit to 4 threads and ensure no other applications are running to prevent OOM.
 
 ## Plugins
 ```
