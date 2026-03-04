@@ -1,0 +1,38 @@
+log_level = "info"
+network = "testnet"
+hive_rpc = "http://192.168.1.102:80"
+be_indexer = true
+
+[network_conf]
+name = "testnet"
+magi_explorer_url = ""
+l1_explorer_url = ""
+start_date = "abc"
+
+[db]
+mongo_url = "mongodb://db:27017"
+magi_db_name = "magi-1"
+be_db_name = "magi-bb"
+cv_db_name = "magi-cv"
+
+[auth]
+enabled = false
+id = "vsc_cv_login"
+timeout_blocks = 20
+key = ""
+
+[server]
+address = "0.0.0.0"
+port = 8080
+
+[compiler]
+enabled = false
+wasm_strip = "wasm-strip"
+wasm_tools = "wasm-tools"
+whitelist = []
+fix_permissions = false
+
+[gocompiler]
+src_dir = ""
+output_dir = ""
+timeout = 10

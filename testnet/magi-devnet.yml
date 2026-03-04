@@ -1,0 +1,165 @@
+services:
+  magi-bb:
+    image: techcoderx/magi-bb:latest
+    profiles:
+      - magi-bb
+    volumes:
+      - ${MAGI_BB_CONFIG_FILE:-./config.toml}:/app/config/config.toml
+    networks:
+      - go-vsc-node
+    ports:
+      - 10719:8080
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f 127.0.0.1:8080/cv-api/v1']
+      interval: 20s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+
+  magi-1:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 127.0.0.1:8081:8080
+      - 10720:10720
+      - 10720:10720/udp
+    volumes:
+      - ./data/devnet/data-1:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-2:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10721:10721
+      - 10721:10721/udp
+    volumes:
+      - ./data/devnet/data-2:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-3:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10722:10722
+      - 10722:10722/udp
+    volumes:
+      - ./data/devnet/data-3:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-4:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10723:10723
+      - 10723:10723/udp
+    volumes:
+      - ./data/devnet/data-4:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-5:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10724:10724
+      - 10724:10724/udp
+    volumes:
+      - ./data/devnet/data-5:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-6:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10725:10725
+      - 10725:10725/udp
+    volumes:
+      - ./data/devnet/data-6:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-7:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10726:10726
+      - 10726:10726/udp
+    volumes:
+      - ./data/devnet/data-7:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-8:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10727:10727
+      - 10727:10727/udp
+    volumes:
+      - ./data/devnet/data-8:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
+  magi-9:
+    image: techcoderx/go-vsc-node:dev
+    entrypoint: ["/home/app/app/entrypoint.sh"]
+    command: ./vsc-node ${MAGI_ARGS:-}
+    profiles:
+      - magi
+    ports:
+      - 10728:10728
+      - 10728:10728/udp
+    volumes:
+      - ./data/devnet/data-9:/data
+    networks:
+      - go-vsc-node
+    depends_on:
+      db:
+        condition: service_healthy
