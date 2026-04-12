@@ -1,0 +1,78 @@
+services:
+  magi-indexer-install:
+    image: postgres:15
+    profiles:
+      - magi-hasura
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        # Create database (idempotent)
+        psql "postgresql://haf_admin@haf/postgres" -tc \
+          "SELECT 1 FROM pg_database WHERE datname = 'magi_indexer'" | grep -q 1 || \
+          psql "postgresql://haf_admin@haf/postgres" -c "CREATE DATABASE magi_indexer"
+        # Create roles (idempotent)
+        psql "postgresql://haf_admin@haf/postgres" -c 'DO $$$$BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '"'"'magi_indexer_owner'"'"') THEN CREATE ROLE magi_indexer_owner LOGIN; END IF; END$$$$;'
+        psql "postgresql://haf_admin@haf/postgres" -c 'DO $$$$BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '"'"'magi_indexer_reader'"'"') THEN CREATE ROLE magi_indexer_reader LOGIN; END IF; END$$$$;'
+        # Grant privileges on magi_indexer database
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "ALTER DATABASE magi_indexer OWNER TO magi_indexer_owner;"
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "GRANT ALL PRIVILEGES ON DATABASE magi_indexer TO magi_indexer_owner;"
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "GRANT CONNECT ON DATABASE magi_indexer TO magi_indexer_reader;"
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "GRANT USAGE ON SCHEMA public TO magi_indexer_reader;"
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO magi_indexer_reader;"
+        psql "postgresql://haf_admin@haf/magi_indexer" -c "ALTER DEFAULT PRIVILEGES FOR ROLE magi_indexer_owner IN SCHEMA public GRANT SELECT ON TABLES TO magi_indexer_reader;"
+        echo "magi-indexer-install: setup complete"
+    networks:
+      - haf-network
+    depends_on:
+      haf:
+        condition: service_healthy
+
+  magi-indexer-hasura:
+    image: hasura/graphql-engine:v2.42.0
+    profiles:
+      - magi-hasura
+    restart: always
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://magi_indexer_owner@haf:5432/magi_indexer
+      HASURA_GRAPHQL_DATABASE_URL: postgres://magi_indexer_reader@haf:5432/magi_indexer
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${MAGI_INDEXER_HASURA_SECRET}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
+    networks:
+      - haf-network
+    depends_on:
+      magi-indexer-install:
+        condition: service_completed_successfully
+      haf:
+        condition: service_healthy
+
+  magi-mongo-indexer:
+    build: ${MAGI_INDEXER_PATH:-.}
+    profiles:
+      - magi-hasura
+    restart: always
+    environment:
+      DATABASE_URL: postgres://magi_indexer_owner@haf:5432/magi_indexer?sslmode=disable
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB_NAME: ${MAGI_INDEXER_MONGO_DB:-magi-1}
+      POLL_INTERVAL_SEC: 5
+      HASURA_URL: http://magi-indexer-hasura:8080
+      HASURA_ADMIN_SECRET: ${MAGI_INDEXER_HASURA_SECRET}
+      HASURA_SOURCE: default
+      MAPPINGS_FILES: /config/events
+      VIEWS_FILES: /config/events
+    volumes:
+      - ${MAGI_INDEXER_PATH:-.}/internal/config/events:/config/events
+    networks:
+      - haf-network
+    depends_on:
+      magi-indexer-install:
+        condition: service_completed_successfully
+      magi-indexer-hasura:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      haf:
+        condition: service_healthy
