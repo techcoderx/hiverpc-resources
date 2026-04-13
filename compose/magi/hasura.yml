@@ -28,7 +28,7 @@ services:
       haf:
         condition: service_healthy
 
-  magi-indexer-hasura:
+  magi-hasura:
     image: hasura/graphql-engine:v2.42.0
     profiles:
       - magi-hasura
@@ -58,7 +58,7 @@ services:
       MONGO_URI: mongodb://mongo:27017
       MONGO_DB_NAME: ${MAGI_INDEXER_MONGO_DB:-magi-1}
       POLL_INTERVAL_SEC: 5
-      HASURA_URL: http://magi-indexer-hasura:8080
+      HASURA_URL: http://magi-hasura:8080
       HASURA_ADMIN_SECRET: ${MAGI_INDEXER_HASURA_SECRET}
       HASURA_SOURCE: default
       MAPPINGS_FILES: /config/events
@@ -70,7 +70,7 @@ services:
     depends_on:
       magi-indexer-install:
         condition: service_completed_successfully
-      magi-indexer-hasura:
+      magi-hasura:
         condition: service_healthy
       mongo:
         condition: service_healthy
