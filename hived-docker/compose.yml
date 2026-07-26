@@ -15,7 +15,7 @@ services:
       - ${HIVED_DATA_DIR}:/home/hived/datadir
       - ${HIVED_SHM_DIR}:/home/hived/shm_dir
     entrypoint:
-      - /home/hived_admin/docker_entrypoint.sh
+      - /home/hived/docker_entrypoint.sh
       - ${ARGUMENTS:-}
     stop_grace_period: 30s
     logging:
