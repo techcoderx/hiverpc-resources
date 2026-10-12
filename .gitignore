@@ -6,3 +6,4 @@ uptime-kuma/config.json
 hivesense-bench/results/
 hivesense-bench/tokenizer.json
 hivesense-bench/uv.lock
+__pycache__
