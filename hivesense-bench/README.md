@@ -101,6 +101,19 @@ Key metrics:
   the auto-parallel slots can exhaust GPU memory as `Insufficient Memory`
   from Metal — add `--extra-server-arg=-np --extra-server-arg=1` if it does;
   the server log in `results/llama-server.log` shows the failure).
+- Encoder-based models (e.g. `jinaai/jina-embeddings-v5-text-nano-retrieval`,
+  EuroBert) need each chunk to fit in one physical batch: with `--embeddings`
+  llama-server forces `-b`/`-ub` down to the smaller value, so llama.cpp's
+  default `-ub 512` rejects any chunk over 512 tokens. Run the nano model
+  with both set to 8192:
+
+  ```sh
+  ./run_benchmark.sh \
+      --model jinaai/jina-embeddings-v5-text-nano-retrieval:F16 \
+      --tokenizer tokenizer-nano.json \
+      --tokenizer-url https://huggingface.co/jinaai/jina-embeddings-v5-text-nano/resolve/main/tokenizer.json \
+      --server-batch-size 8192 --server-ubatch-size 8192
+  ```
 - The preprocessing port is line-for-line from `db/posts_preprocessing.sql`
   but lives outside the database; if the SQL changes, keep this file in sync.
   A run against a Hivemind database without the hivesense schema is expected —

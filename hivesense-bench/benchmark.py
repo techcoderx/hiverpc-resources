@@ -190,6 +190,7 @@ def run_posts_phase(args, chunker, client, posts, csv_writer):
     prep_secs = 0.0
     embed_started = None
     latencies = []
+    embedding_dim = None
     futures = []
 
     pool = ThreadPoolExecutor(max_workers=args.workers)
@@ -216,7 +217,9 @@ def run_posts_phase(args, chunker, client, posts, csv_writer):
                     client.embed_batch, [c[2] for c in batch]))
 
         for future in futures:
-            _vectors, elapsed = future.result()
+            vectors, elapsed = future.result()
+            if embedding_dim is None and vectors:
+                embedding_dim = len(vectors[0])
             latencies.append(elapsed * 1000)
     finally:
         pool.shutdown(wait=False, cancel_futures=True)
@@ -233,6 +236,7 @@ def run_posts_phase(args, chunker, client, posts, csv_writer):
         "posts_discarded": discarded,
         "posts_embedded": len(posts) - discarded,
         "chunks": chunks_total,
+        "embedding_dim": embedding_dim,
         "post_tokens": post_tokens_total,
         "chunk_tokens": chunk_tokens_total,
         "requests": len(latencies),
@@ -253,8 +257,11 @@ def run_queries_phase(args, chunker, client, queries, csv_writer):
     query_tokens = [chunker.count_tokens(t) for t in query_texts]
 
     sequential = []
+    embedding_dim = None
     for text in query_texts:
-        _vectors, elapsed = client.embed_batch([text])
+        vectors, elapsed = client.embed_batch([text])
+        if embedding_dim is None and vectors:
+            embedding_dim = len(vectors[0])
         sequential.append(elapsed * 1000)
 
     concurrent = []
@@ -277,6 +284,7 @@ def run_queries_phase(args, chunker, client, queries, csv_writer):
     total_tokens = sum(query_tokens)
     return {
         "count": len(query_texts),
+        "embedding_dim": embedding_dim,
         "query_tokens": {
             "total": total_tokens,
             "mean": round(total_tokens / len(query_texts), 1) if query_texts else 0,
@@ -317,8 +325,9 @@ def print_summary(report):
         print("posts:   %d embedded, %d discarded (<%d tokens)"
               % (posts["posts_embedded"], posts["posts_discarded"],
                  cfg["min_token_threshold"]))
-        print("chunks:  %d (%d post tokens, %d chunk tokens)"
-              % (posts["chunks"], posts["post_tokens"], posts["chunk_tokens"]))
+        print("chunks:  %d (dim %s, %d post tokens, %d chunk tokens)"
+              % (posts["chunks"], posts.get("embedding_dim") or "?",
+                 posts["post_tokens"], posts["chunk_tokens"]))
         print("throughput: %.1f chunks/s, %.1f chunk-tokens/s, %.1f posts/s"
               % (posts["chunks_per_sec"] or 0,
                  posts["chunk_tokens_per_sec"] or 0,
@@ -334,8 +343,9 @@ def print_summary(report):
     if queries:
         print()
         print("--- search query embeddings ---")
-        print("queries: %d (mean %.1f tokens, max %d)"
-              % (queries["count"], queries["query_tokens"]["mean"],
+        print("queries: %d (dim %s, mean %.1f tokens, max %d)"
+              % (queries["count"], queries.get("embedding_dim") or "?",
+                 queries["query_tokens"]["mean"],
                  queries["query_tokens"]["max"]))
         seq = queries["sequential"]
         print("sequential: %.1f queries/s, latency (ms): %s"
