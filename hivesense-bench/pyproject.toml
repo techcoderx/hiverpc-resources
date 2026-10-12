@@ -1,0 +1,16 @@
+[project]
+name = "hivesense-embeddings-benchmark"
+version = "0.1.0"
+description = "Benchmark suite for HiveSense post and search-query embedding generation"
+# pysbd (unmaintained) emits SyntaxWarnings and may break on 3.14+
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "beautifulsoup4>=4.12",
+  "lxml>=5.0",
+  "psycopg[binary]>=3.1",
+  "pysbd>=0.3.4",
+  "tokenizers>=0.19",
+]
+
+[tool.uv]
+package = false

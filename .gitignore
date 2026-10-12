@@ -1,3 +1,8 @@
 node_modules
 .DS_Store
 uptime-kuma/config.json
+
+# embedding benchmark artifacts
+hivesense-bench/results/
+hivesense-bench/tokenizer.json
+hivesense-bench/uv.lock
