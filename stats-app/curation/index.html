@@ -124,7 +124,7 @@
       document.getElementById('alert').innerText = 'Last days must be between 1 and 30'
       return document.getElementById('alert').style.display = 'block'
     }
-    outgoing = await (await fetch(`https://vsc.techcoderx.com/personal/vote-summary/outgoing/${user}/${lastDays}/1`)).json()
+    outgoing = await (await fetch(`https://techcoderx.com/curation-api/summary/outgoing/${user}/${lastDays}/1`)).json()
     render()
   }
   document.getElementById('submit-btn').onclick = (evt) => {
