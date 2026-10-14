@@ -104,6 +104,9 @@ In Docker Desktop, go to `Settings > Resources > Advanced` and set the memory li
 # Basic
 plugin = witness webserver p2p json_rpc database_api network_broadcast_api condenser_api block_api rc_api wallet_bridge_api
 
+# Account metadata
+plugin = metadata
+
 # Reputation
 plugin = reputation reputation_api
 
@@ -197,6 +200,18 @@ SELECT schemaname,
     pg_size_pretty(SUM(pg_indexes_size(relid))) AS indexes_size
 FROM pg_catalog.pg_statio_user_tables
 GROUP BY schemaname;
+```
+
+By table:
+```pgsql
+SELECT
+    schemaname,
+    relname AS table_name,
+    pg_size_pretty(pg_table_size(relid)) AS table_size,
+    pg_size_pretty(pg_indexes_size(relid)) AS index_size,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC;
 ```
 
 ## ⚠️ Warning
